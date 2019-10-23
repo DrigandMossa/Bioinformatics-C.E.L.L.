@@ -18,10 +18,12 @@ class Window(Frame):
     def init_window(self):
 
 
-        def openfile2():
-            global files
-            files = open('brca1 gene text acgt.txt', mode='r')
-            print(files)
+
+        def openfile1():
+            global open_file
+            filename = askopenfilename()
+            open_file = open(filename, mode='r', encoding="ISO-8859-1")
+            print(open_file)
 
 
 
@@ -36,7 +38,7 @@ class Window(Frame):
         self.pack(fill=BOTH, expand=1)
         #opens file dialog for file selection on button click
         #need to figure out how to call the chosen file later in acgt_count
-        filesearchbutton = Button(self, text="File Open", command=openfile2())
+        filesearchbutton = Button(self, text="File Open", command=openfile1())
         filesearchbutton.place(x=10, y=120)
 
         def get_gc():
@@ -45,7 +47,7 @@ class Window(Frame):
             a = 0
             t = 0
             freq = []
-            for line in files:
+            for line in open_file:
                 dna_file = line.rstrip("\n")
                 length = len(dna_file)
                 for char in line:
@@ -80,7 +82,7 @@ class Window(Frame):
 
 
 
-        
+
         rungcbutton = Button(text="Run gc", command=lambda: get_gc())
         rungcbutton.place(x=10, y=146)
 
