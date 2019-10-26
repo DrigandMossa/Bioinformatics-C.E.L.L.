@@ -1,10 +1,8 @@
+import tkinter as tk
 from tkinter import *
 from tkinter import filedialog
 from collections import defaultdict
 from tkinter.filedialog import askopenfilename
-from itertools import *
-from functools import partial
-
 
 class Window(Frame):
 
@@ -40,6 +38,8 @@ class Window(Frame):
         #need to figure out how to call the chosen file later in acgt_count
         filesearchbutton = Button(self, text="File Open", command=openfile1())
         filesearchbutton.place(x=10, y=120)
+
+
 
         def get_gc():
             g = 0
@@ -80,11 +80,29 @@ class Window(Frame):
             label24 = Label(text="gc min index: " + str(gcminindex)).place(x=10, y=600)
             return
 
+        motif_entry_label = Label(text="Motif").place(x=40, y=200)
+        motif_entry = tk.Entry(self)
+        motif_entry.place(x=80, y=200)
+
+        def get_motif():
+            motif_list = []
+            for line in open_file:
+                dna_file = line.rstrip("/n")
+                length = len(dna_file)
+                motif = len(motif_entry)
+                for char in range(len(motif) - 1):
+                    if char == motif:
+                        motif_list.append(char)
+                    else:
+                        motif_list = motif_list
+
 
 
 
         rungcbutton = Button(text="Run gc", command=lambda: get_gc())
         rungcbutton.place(x=10, y=146)
+        runmotifbutton = Button(text="Run motif search", command=lambda: get_motif())
+        runmotifbutton.place(x=80, y=146)
 
 
 
