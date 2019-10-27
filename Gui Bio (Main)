@@ -1,4 +1,6 @@
 import tkinter as tk
+import re
+from collections import defaultdict
 from tkinter import *
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
@@ -6,21 +8,27 @@ from tkinter.filedialog import askopenfilename
 
 def openfile1(event=None):
     global open_file
+    global filename
     filename = filedialog.askopenfilename()
     open_file = open(filename, mode='r', encoding="ISO-8859-1")
     print('Selected:', filename)
 
 master = tk.Tk()
+frame = Frame(master)
+frame.pack()
 
+bottomframe = Frame(master)
+bottomframe.pack(side=BOTTOM)
 
 #is required to exist in order for openfile1 to work? this is so weird
-filesearchbutton = tk.Button(master, text="File Open", command=openfile1)
-filesearchbutton.place(x=10, y=120)
+filesearchbutton = tk.Button(frame, text="File Open", command=openfile1)
+filesearchbutton.pack(side=TOP)
 
-#makes an entry widget that doesn't work
-motif_entry_label = Label(text="Motif").place(x=40, y=200)
-motif_entry = tk.Entry(master, bd=5)
-motif_entry.place(x=80, y=200)
+#makes an entry widget
+global motif_entry
+motif_entry_label = Label(frame, text="Motif").pack(side=TOP)
+motif_entry = tk.Entry(frame, bd=5)
+motif_entry.pack(side=TOP)
 
 #get's gc percetage and index of gcmin and gcmax from freq list
 def get_gc():
@@ -51,15 +59,15 @@ def get_gc():
                 gcminindex = freq.index(gcmin)
                 gcmaxindex = freq.index(gcmax)
 
-    label18 = Label(text="number of g's " + str(g)).place(x=10, y=500)
-    label19 = Label(text="number of c's " + str(c)).place(x=10, y=480)
-    label20 = Label(text="number of a's " + str(a)).place(x=10, y=440)
-    label21 = Label(text="number of t's " + str(t)).place(x=10, y=420)
-    label17 = Label(text="gc content: " + str(gc)).place(x=10, y=400)
-    label22 = Label(text="gc min: " + str(gcmin)).place(x=10, y=520)
-    label22 = Label(text="gc max: " + str(gcmax)).place(x=10, y=540)
-    label23 = Label(text="gc max index: " + str(gcmaxindex)).place(x=10, y=580)
-    label24 = Label(text="gc min index: " + str(gcminindex)).place(x=10, y=600)
+    label18 = Label(frame, text="number of g's " + str(g)).pack(side=TOP)
+    label19 = Label(frame, text="number of c's " + str(c)).pack(side=TOP)
+    label20 = Label(frame, text="number of a's " + str(a)).pack(side=TOP)
+    label21 = Label(frame, text="number of t's " + str(t)).pack(side=TOP)
+    label17 = Label(frame, text="gc content: " + str(gc)).pack(side=TOP)
+    label22 = Label(frame, text="gc min: " + str(gcmin)).pack(side=TOP)
+    label22 = Label(frame, text="gc max: " + str(gcmax)).pack(side=TOP)
+    label23 = Label(frame, text="gc max index: " + str(gcmaxindex)).pack(side=TOP)
+    label24 = Label(frame, text="gc min index: " + str(gcminindex)).pack(side=TOP)
     return
 
 
@@ -69,24 +77,67 @@ def get_motif():
     for line in open_file:
         dna_file = line.rstrip("/n")
         length = len(dna_file)
-        motif = len(motif_entry)
         motif_catch = motif_entry.get()
-        for char in range(len(motif_entry) - 1):
+        motif = len(motif_catch)
+        for char in range(len(motif_catch) - 1):
             if char == motif_entry:
-                motif_list.append(char)
+                motif_list.append.index(char)
             else:
                 print(motif_list)
 
+#finds the motif at specified amounts of allowable error and length
+def FrequentWordsWithMismatches(g, k, d): #class this?
 
 
+    patcount = defaultdict(int)
+    alphabet = "ACGT"
+    allbut = {ch: tuple(c for c in alphabet if c != ch)
+              for ch in alphabet}
 
-#this runds the get_gc function and actually works
-rungcbutton = Button(master, text="Run gc", command=lambda: get_gc())
-rungcbutton.place(x=10, y=146)
+    def inner(i, rd):
+        if not rd or i == k:
+            patcount["".join(base)] += 1
+            return
+        inner(i+1, rd)
+        orig = base[i]
+        for base[i] in allbut[orig]:
+            inner(i+1, rd-1)
+        base[i] = orig
+
+    for i in range(len(g) - k + 1):
+        base = list(g[i : i + k])
+        inner(0, d)
+
+    maxcount = max(patcount.values())
+    return [p for p, c in patcount.items() if c == maxcount]
+
+print(FrequentWordsWithMismatches('AAAAAAAAAA', 2, 1))
+
+#finds the indexes of the motif in file
+#pretty sure Pattern and Genome are flipflopped here
+def PatternMatching():
+    fish = open(filename, "r", encoding="ISO-8859-1")
+    motif_catch = motif_entry.get()
+    Pattern = fish.read()
+    Genome = motif_catch
+    k = len(Pattern)
+    t = len(Genome)
+    starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+    labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
+    return starting_points
+
+
+#this runs the get_gc function and actually works
+runmotiffindindexbutton = Button(bottomframe, text="Run Find Motif Index", command=lambda: PatternMatching())
+runmotiffindindexbutton.pack(side=LEFT)
+
+#this runs the get_gc function and actually works
+rungcbutton = Button(bottomframe, text="Run gc", command=lambda: get_gc())
+rungcbutton.pack(side=LEFT)
 
 #this runs the get_motif function and calls an error because th etext widget doesn't work
-runmotifbutton = Button(master, text="Run motif search", command=lambda: get_motif())
-runmotifbutton.place(x=80, y=146)
+runmotifbutton = Button(bottomframe, text="Run motif search", command=lambda: get_motif())
+runmotifbutton.pack(side=LEFT)
 
 
 
