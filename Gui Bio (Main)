@@ -1,0 +1,93 @@
+import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter.filedialog import askopenfilename
+
+
+def openfile1(event=None):
+    global open_file
+    filename = filedialog.askopenfilename()
+    open_file = open(filename, mode='r', encoding="ISO-8859-1")
+    print('Selected:', filename)
+
+master = tk.Tk()
+
+
+#is required to exist in order for openfile1 to work? this is so weird
+filesearchbutton = tk.Button(master, text="File Open", command=openfile1)
+filesearchbutton.place(x=10, y=120)
+
+#makes an entry widget that doesn't work
+motif_entry_label = Label(text="Motif").place(x=40, y=200)
+motif_entry = tk.Entry(master, bd=5)
+motif_entry.place(x=80, y=200)
+
+#get's gc percetage and index of gcmin and gcmax from freq list
+def get_gc():
+    g = 0
+    c = 0
+    a = 0
+    t = 0
+    freq = []
+    for line in open_file:
+        dna_file = line.rstrip("\n")
+        length = len(dna_file)
+        for char in line:
+            # is it only doing the first character of every line?
+
+            # i want to append the index as a key to freq and then add the gc as it's value
+            if char == "g":
+                g += 1
+            if char == "c":
+                c += 1
+            if char == "a":
+                a += 1
+            if char == "t":
+                t += 1
+                gc = (g + c + 0.) / (a + t + c + g + 0.)
+                freq.append(gc)
+                gcmin = min(freq)
+                gcmax = max(freq)
+                gcminindex = freq.index(gcmin)
+                gcmaxindex = freq.index(gcmax)
+
+    label18 = Label(text="number of g's " + str(g)).place(x=10, y=500)
+    label19 = Label(text="number of c's " + str(c)).place(x=10, y=480)
+    label20 = Label(text="number of a's " + str(a)).place(x=10, y=440)
+    label21 = Label(text="number of t's " + str(t)).place(x=10, y=420)
+    label17 = Label(text="gc content: " + str(gc)).place(x=10, y=400)
+    label22 = Label(text="gc min: " + str(gcmin)).place(x=10, y=520)
+    label22 = Label(text="gc max: " + str(gcmax)).place(x=10, y=540)
+    label23 = Label(text="gc max index: " + str(gcmaxindex)).place(x=10, y=580)
+    label24 = Label(text="gc min index: " + str(gcminindex)).place(x=10, y=600)
+    return
+
+
+#should find the matching motifs in each line of file and append them to motif_list
+def get_motif():
+    motif_list = []
+    for line in open_file:
+        dna_file = line.rstrip("/n")
+        length = len(dna_file)
+        motif = len(motif_entry)
+        motif_catch = motif_entry.get()
+        for char in range(len(motif_entry) - 1):
+            if char == motif_entry:
+                motif_list.append(char)
+            else:
+                print(motif_list)
+
+
+
+
+#this runds the get_gc function and actually works
+rungcbutton = Button(master, text="Run gc", command=lambda: get_gc())
+rungcbutton.place(x=10, y=146)
+
+#this runs the get_motif function and calls an error because th etext widget doesn't work
+runmotifbutton = Button(master, text="Run motif search", command=lambda: get_motif())
+runmotifbutton.place(x=80, y=146)
+
+
+
+master.mainloop()
