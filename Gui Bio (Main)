@@ -7,15 +7,40 @@ from tkinter.filedialog import askopenfilename
 
 
 def openfile1(event=None):
-    global open_file
     global filename
+    global open_file
     filename = filedialog.askopenfilename()
     open_file = open(filename, mode='r', encoding="ISO-8859-1")
     print('Selected:', filename)
 
+
+
+def openmotif (event=None):
+    global open_motif
+    global motifname
+    motifname = filedialog.askopenfilename()
+    open_motif = open(motifname, mode='r', encoding="ISO-8859-1")
+    print('Selected:', motifname)
+
+    def motif_index():
+        Genome = open_file.read()
+        Pattern = open_motif.read()
+        k = len(Pattern)
+        t = len(Genome)
+        # labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
+        # starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+        return [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+        # return starting_points
+
+    print(motif_index())
+
+
+
 master = tk.Tk()
 frame = Frame(master)
 frame.pack()
+
+
 
 bottomframe = Frame(master)
 bottomframe.pack(side=BOTTOM)
@@ -24,11 +49,14 @@ bottomframe.pack(side=BOTTOM)
 filesearchbutton = tk.Button(frame, text="File Open", command=openfile1)
 filesearchbutton.pack(side=TOP)
 
-#makes an entry widget
-global motif_entry
-motif_entry_label = Label(frame, text="Motif").pack(side=TOP)
-motif_entry = tk.Entry(frame, bd=5)
-motif_entry.pack(side=TOP)
+#for the motif file
+motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
+motiffilesearchbutton.pack(side=TOP)
+
+# finds the indexes of the motif in file
+# returns a blank list?
+runmotiffindindexbutton = Button(bottomframe, text="Run Find Motif Index ", command=lambda: open_motif())
+runmotiffindindexbutton.pack(side=LEFT)
 
 #get's gc percetage and index of gcmin and gcmax from freq list
 def get_gc():
@@ -77,17 +105,19 @@ def get_motif():
     for line in open_file:
         dna_file = line.rstrip("/n")
         length = len(dna_file)
-        motif_catch = motif_entry.get()
+        motif_catch = open_motif.read()
         motif = len(motif_catch)
         for char in range(len(motif_catch) - 1):
-            if char == motif_entry:
+            if char == motif_catch:
                 motif_list.append.index(char)
             else:
                 print(motif_list)
 
 #finds the motif at specified amounts of allowable error and length
 def FrequentWordsWithMismatches(g, k, d): #class this?
-
+ #g is genome
+ #k is length
+ #d is number of allowable error
 
     patcount = defaultdict(int)
     alphabet = "ACGT"
@@ -113,23 +143,12 @@ def FrequentWordsWithMismatches(g, k, d): #class this?
 
 print(FrequentWordsWithMismatches('AAAAAAAAAA', 2, 1))
 
-#finds the indexes of the motif in file
-#pretty sure Pattern and Genome are flipflopped here
-def PatternMatching():
-    fish = open(filename, "r", encoding="ISO-8859-1")
-    motif_catch = motif_entry.get()
-    Pattern = fish.read()
-    Genome = motif_catch
-    k = len(Pattern)
-    t = len(Genome)
-    starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
-    labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
-    return starting_points
 
 
-#this runs the get_gc function and actually works
-runmotiffindindexbutton = Button(bottomframe, text="Run Find Motif Index", command=lambda: PatternMatching())
-runmotiffindindexbutton.pack(side=LEFT)
+
+
+
+
 
 #this runs the get_gc function and actually works
 rungcbutton = Button(bottomframe, text="Run gc", command=lambda: get_gc())
