@@ -13,7 +13,7 @@ def openfile1(event=None):
     global open_file
     filename = filedialog.askopenfilename()
     #filename2 = filename.decode('iso-8859-1').encode('utf8')
-    open_file = open(filename, mode='r', encoding="ISO-8859-1")
+    open_file = open(filename, mode='r', encoding='utf-8-sig')
     print('Selected:', filename)
     return open_file
 
@@ -23,7 +23,7 @@ def openmotif (event=None):
     global open_motif
     global motifname
     motifname = filedialog.askopenfilename()
-    open_motif = open(motifname, mode='r', encoding="ISO-8859-1")
+    open_motif = open(motifname, mode='r', encoding='utf-8-sig')
     print('Selected:', motifname)
     return open_motif
 
@@ -50,11 +50,13 @@ motiffilesearchbutton.pack(side=TOP)
 
 
 def motif_index():
-    Genome = filename.read()
+    Genome = open_file.read()
     Pattern = open_motif.read()
     k = len(Pattern)
     t = len(Genome)
     starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+    print(Genome)
+    print(Pattern)
     #return [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
     labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
     return starting_points
@@ -106,10 +108,10 @@ def get_gc():
 #prints gibberish and symbols. Encoding error?
 def readA():
     motif_catch = []
-    with codecs.open(filename, mode='r', encoding="ISO-8859-1") as text:
+    with codecs.open(filename, mode='r', encoding='utf-8-sig') as text:
         mylist = [line.rstrip('\n') for line in text]
         print(mylist)
-        with codecs.open(motifname, mode='r', encoding="ISO-8859-1") as motif:
+        with codecs.open(motifname, mode='r', encoding='utf-8-sig') as motif:
             mylist2 = [line.rstrip('\n') for line in motif]
             print(mylist2)
             listjoin = "".join(mylist2)
@@ -192,6 +194,9 @@ runmotifbutton.pack(side=LEFT)
 runmotifbuttontest = Button(bottomframe, text="TEST Run motif search", command=lambda: readB())
 runmotifbuttontest.pack(side=LEFT)
 
+#test2 for the run motif button
+runmotifbuttontest2 = Button(bottomframe, text="TEST2 Run motif search", command=lambda: motif_index())
+runmotifbuttontest2.pack(side=LEFT)
 
 
 master.mainloop()
