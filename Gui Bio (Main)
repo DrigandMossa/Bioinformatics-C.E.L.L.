@@ -1,17 +1,21 @@
 import tkinter as tk
 import re
+import mmap
 from collections import defaultdict
 from tkinter import *
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
+import codecs
 
 
 def openfile1(event=None):
     global filename
     global open_file
     filename = filedialog.askopenfilename()
+    #filename2 = filename.decode('iso-8859-1').encode('utf8')
     open_file = open(filename, mode='r', encoding="ISO-8859-1")
     print('Selected:', filename)
+    return open_file
 
 
 
@@ -21,18 +25,9 @@ def openmotif (event=None):
     motifname = filedialog.askopenfilename()
     open_motif = open(motifname, mode='r', encoding="ISO-8859-1")
     print('Selected:', motifname)
+    return open_motif
 
-    def motif_index():
-        Genome = open_file.read()
-        Pattern = open_motif.read()
-        k = len(Pattern)
-        t = len(Genome)
-        # labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
-        # starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
-        return [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
-        # return starting_points
 
-    print(motif_index())
 
 
 
@@ -53,10 +48,17 @@ filesearchbutton.pack(side=TOP)
 motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
 motiffilesearchbutton.pack(side=TOP)
 
-# finds the indexes of the motif in file
-# returns a blank list?
-runmotiffindindexbutton = Button(bottomframe, text="Run Find Motif Index ", command=lambda: open_motif())
-runmotiffindindexbutton.pack(side=LEFT)
+
+def motif_index():
+    Genome = filename.read()
+    Pattern = open_motif.read()
+    k = len(Pattern)
+    t = len(Genome)
+    starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+    #return [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+    labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
+    return starting_points
+    print(motif_index())
 
 #get's gc percetage and index of gcmin and gcmax from freq list
 def get_gc():
@@ -100,18 +102,44 @@ def get_gc():
 
 
 #should find the matching motifs in each line of file and append them to motif_list
-def get_motif():
-    motif_list = []
-    for line in open_file:
-        dna_file = line.rstrip("/n")
-        length = len(dna_file)
-        motif_catch = open_motif.read()
-        motif = len(motif_catch)
-        for char in range(len(motif_catch) - 1):
-            if char == motif_catch:
-                motif_list.append.index(char)
-            else:
-                print(motif_list)
+#returns blank list
+#prints gibberish and symbols. Encoding error?
+def readA():
+    motif_catch = []
+    with codecs.open(filename, mode='r', encoding="ISO-8859-1") as text:
+        mylist = [line.rstrip('\n') for line in text]
+        print(mylist)
+        with codecs.open(motifname, mode='r', encoding="ISO-8859-1") as motif:
+            mylist2 = [line.rstrip('\n') for line in motif]
+            print(mylist2)
+            listjoin = "".join(mylist2)
+            print(listjoin)
+            for line in mylist:
+                for char in line:
+                    if char == motif:
+                        motifi = char.index(listjoin)
+                        motif_catch.append(motifi)
+                        print(*motif_catch, sep='\n')
+            label25 = Label(frame, text="List of motif index/es " + str(motif_catch)).pack(side=TOP)
+
+#calling the function opens file choice
+def readB():
+    motif_catch = []
+    with openfile1() as text:
+        mylist = [line.rstrip('\n') for line in text]
+        print(mylist)
+        with openmotif() as motif:
+            mylist2 = [line.rstrip('\n') for line in motif]
+            print(mylist2)
+            listjoin = "".join(mylist2)
+            print(listjoin)
+            for line in mylist:
+                for char in line:
+                    if char == motif:
+                        motifi = char.index(listjoin)
+                        motif_catch.append(motifi)
+                        print(*motif_catch, sep='\n')
+            label25 = Label(frame, text="List of motif index/es " + str(motif_catch)).pack(side=TOP)
 
 #finds the motif at specified amounts of allowable error and length
 def FrequentWordsWithMismatches(g, k, d): #class this?
@@ -150,13 +178,19 @@ print(FrequentWordsWithMismatches('AAAAAAAAAA', 2, 1))
 
 
 
+
 #this runs the get_gc function and actually works
 rungcbutton = Button(bottomframe, text="Run gc", command=lambda: get_gc())
 rungcbutton.pack(side=LEFT)
 
-#this runs the get_motif function and calls an error because th etext widget doesn't work
-runmotifbutton = Button(bottomframe, text="Run motif search", command=lambda: get_motif())
+# finds the indexes of the motif in file
+# returns a blank list?
+runmotifbutton = Button(bottomframe, text="Run motif search", command=lambda: readA())
 runmotifbutton.pack(side=LEFT)
+
+#test for the run motif button
+runmotifbuttontest = Button(bottomframe, text="TEST Run motif search", command=lambda: readB())
+runmotifbuttontest.pack(side=LEFT)
 
 
 
