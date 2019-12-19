@@ -1,11 +1,14 @@
 import tkinter as tk
-import re
-import mmap
+from tkinter import ttk
 from collections import defaultdict
 from tkinter import *
+from bs4 import BeautifulSoup
+import urllib.request
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
-import codecs
+
+
+
 
 
 def openfile1(event=None):
@@ -30,24 +33,40 @@ def openmotif (event=None):
 
 
 
-
+#master widget
 master = tk.Tk()
 frame = Frame(master)
 frame.pack()
 
+#notebook widget
+nb = ttk.Notebook(master)
+nb.pack(expand=1, fill='both')
+
+#make first tab
+f1 = tk.Frame(nb)
+#add the tab
+nb.add(f1, text="First Tab")
+#add text label
+gene1lbl = Label(f1, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
+
+#make the second tab
+f2 = tk.Frame(nb)
+#add the tab
+nb.add(f2, text="Second Tab")
+#add label to tab
+lbl1 = Label(f2, text='label 1')
+lbl1.pack()
+
+nb.select(f2)
+
+nb.enable_traversal()
+
+topframe = Frame(master)
+topframe.pack(side=TOP)
 
 
 bottomframe = Frame(master)
 bottomframe.pack(side=BOTTOM)
-
-#is required to exist in order for openfile1 to work? this is so weird
-filesearchbutton = tk.Button(frame, text="File Open", command=openfile1)
-filesearchbutton.pack(side=TOP)
-
-#for the motif file
-motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
-motiffilesearchbutton.pack(side=TOP)
-
 
 def motif_index():
     Genome = open_file.read()
@@ -57,7 +76,6 @@ def motif_index():
     starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
     print(Genome)
     print(Pattern)
-    #return [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
     labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
     return starting_points
     print(motif_index())
@@ -103,45 +121,7 @@ def get_gc():
     return
 
 
-#should find the matching motifs in each line of file and append them to motif_list
-#returns blank list
-#prints gibberish and symbols. Encoding error?
-def readA():
-    motif_catch = []
-    with codecs.open(filename, mode='r', encoding='utf-8-sig') as text:
-        mylist = [line.rstrip('\n') for line in text]
-        print(mylist)
-        with codecs.open(motifname, mode='r', encoding='utf-8-sig') as motif:
-            mylist2 = [line.rstrip('\n') for line in motif]
-            print(mylist2)
-            listjoin = "".join(mylist2)
-            print(listjoin)
-            for line in mylist:
-                for char in line:
-                    if char == motif:
-                        motifi = char.index(listjoin)
-                        motif_catch.append(motifi)
-                        print(*motif_catch, sep='\n')
-            label25 = Label(frame, text="List of motif index/es " + str(motif_catch)).pack(side=TOP)
 
-#calling the function opens file choice
-def readB():
-    motif_catch = []
-    with openfile1() as text:
-        mylist = [line.rstrip('\n') for line in text]
-        print(mylist)
-        with openmotif() as motif:
-            mylist2 = [line.rstrip('\n') for line in motif]
-            print(mylist2)
-            listjoin = "".join(mylist2)
-            print(listjoin)
-            for line in mylist:
-                for char in line:
-                    if char == motif:
-                        motifi = char.index(listjoin)
-                        motif_catch.append(motifi)
-                        print(*motif_catch, sep='\n')
-            label25 = Label(frame, text="List of motif index/es " + str(motif_catch)).pack(side=TOP)
 
 #finds the motif at specified amounts of allowable error and length
 def FrequentWordsWithMismatches(g, k, d): #class this?
@@ -173,29 +153,29 @@ def FrequentWordsWithMismatches(g, k, d): #class this?
 
 print(FrequentWordsWithMismatches('AAAAAAAAAA', 2, 1))
 
+#def freqwordholdings():
 
 
 
 
 
 
+#is required to exist in order for openfile1 to work? this is so weird
+filesearchbutton = tk.Button(frame, text="File Open", command=openfile1)
+filesearchbutton.pack(side=TOP)
+
+#for the motif file
+motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
+motiffilesearchbutton.pack(side=TOP)
 
 
 #this runs the get_gc function and actually works
 rungcbutton = Button(bottomframe, text="Run gc", command=lambda: get_gc())
 rungcbutton.pack(side=LEFT)
 
-# finds the indexes of the motif in file
-# returns a blank list?
-runmotifbutton = Button(bottomframe, text="Run motif search", command=lambda: readA())
-runmotifbutton.pack(side=LEFT)
-
-#test for the run motif button
-runmotifbuttontest = Button(bottomframe, text="TEST Run motif search", command=lambda: readB())
-runmotifbuttontest.pack(side=LEFT)
 
 #test2 for the run motif button
-runmotifbuttontest2 = Button(bottomframe, text="TEST2 Run motif search", command=lambda: motif_index())
+runmotifbuttontest2 = Button(bottomframe, text="Run motif search", command=lambda: motif_index())
 runmotifbuttontest2.pack(side=LEFT)
 
 
