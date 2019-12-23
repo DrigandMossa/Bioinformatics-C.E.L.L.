@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 from collections import defaultdict
 from tkinter import *
-from bs4 import BeautifulSoup
+import bs4 as bs
 import urllib.request
 from tkinter import filedialog
+import json
 from tkinter.filedialog import askopenfilename
 
 
@@ -48,6 +49,9 @@ f1 = tk.Frame(nb)
 nb.add(f1, text="First Tab")
 #add text label
 gene1lbl = Label(f1, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
+gene1lbl.pack(side=LEFT)
+
+
 
 #make the second tab
 f2 = tk.Frame(nb)
@@ -57,7 +61,24 @@ nb.add(f2, text="Second Tab")
 lbl1 = Label(f2, text='label 1')
 lbl1.pack()
 
-nb.select(f2)
+#make the third tab
+f3 = tk.Frame(nb)
+#add the tab
+nb.add(f3, text="Third Tab")
+#add label to tab
+lbl2 = Label(f3, text=str()).pack()
+
+def gene1function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    print(soup.get_text())
+
+
+# add button for download of string
+gene1button = Button(f1, text="Download", command=lambda: gene1function())
+gene1button.pack(side=LEFT)
+
+nb.select(f1)
 
 nb.enable_traversal()
 
