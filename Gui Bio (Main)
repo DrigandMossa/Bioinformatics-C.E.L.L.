@@ -71,6 +71,9 @@ lbl2 = Label(f3, text=str()).pack()
 def gene1function(event=NONE):
     source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
     soup = bs.BeautifulSoup(source, features="html.parser")
+    #fileName = filedialog.asksaveasfilename(parent=master, title="Save file as...")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
     print(soup.get_text())
 
 
