@@ -1,0 +1,4 @@
+Replace tab buttons with checkmark boxes.
+Have them run seperately through the function.
+Have the function look for the check boxes and if checked then run the held variable through the function.
+That way the list of things can be added too while still allowing for user variable input for the function.
