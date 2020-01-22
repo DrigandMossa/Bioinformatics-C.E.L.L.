@@ -5,6 +5,7 @@ from tkinter import *
 import bs4 as bs
 import urllib.request
 from tkinter import filedialog
+from tkinter.ttk import Progressbar
 import json
 from tkinter.filedialog import askopenfilename
 
@@ -16,7 +17,6 @@ def openfile1(event=None):
     global filename
     global open_file
     filename = filedialog.askopenfilename()
-    #filename2 = filename.decode('iso-8859-1').encode('utf8')
     open_file = open(filename, mode='r', encoding='utf-8-sig')
     print('Selected:', filename)
     return open_file
@@ -43,14 +43,55 @@ frame.pack()
 nb = ttk.Notebook(master)
 nb.pack(expand=1, fill='both')
 
+
+var1 = IntVar()
+var2 = IntVar()
+
+
+def gene1function(event=NONE):
+    source = urllib.request.urlopen(
+        'https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene2function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene3function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
 #make first tab
 f1 = tk.Frame(nb)
 #add the tab
-nb.add(f1, text="First Tab")
+nb.add(f1, text="Downloadables")
 #add text label
 gene1lbl = Label(f1, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
-gene1lbl.pack(side=LEFT)
-
+gene1lbl.pack()
+# add button for download of string
+gene1button = Button(f1, text="Download", command=lambda: gene1function())
+gene1button.pack()
+#add second label
+genlbl2 = Label(f1, text='Homo sapiens BRCA1 (BRCA1) gene, complete cds; ribosomal protein L21-like protein (rpL21) pseudogene, complete sequence; Rho7 (Rho7) and VatI (VatI) genes, complete cds; and unknown (ifp35) gene, exons 1 through 3 and partial cds')
+genlbl2.pack()
+# add button for download of string
+gene2button = Button(f1, text="Download", command=lambda: gene2function())
+gene2button.pack()
+#add text label
+genelbl3 = Label(f1, text='Test')
+genelbl3.pack()
+#add button for string download
+gene3button = Button(f1, text='Testing', command=lambda: gene3function())
+gene3button.pack()
 
 
 #make the second tab
@@ -68,17 +109,69 @@ nb.add(f3, text="Third Tab")
 #add label to tab
 lbl2 = Label(f3, text=str()).pack()
 
+#this is the variable for the checkboxes that holds whether they have been checked or not
+#this will be checked by the ifcheckboxchecked function
+var1 = IntVar()
+var2 = IntVar()
+var3 = IntVar()
+
+#these are the functions that are run if their checkbox is checked and the button for the ifcheckboxchecked function is pushed
 def gene1function(event=NONE):
-    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    source = urllib.request.urlopen(
+        'https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene2function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene3function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
     soup = bs.BeautifulSoup(source, features="html.parser")
     with tk.filedialog.asksaveasfile() as f:
         f.write(repr(soup))
     print(soup.get_text())
 
 
+gene1lbl = Label(f3, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
+gene1lbl.pack()
 # add button for download of string
-gene1button = Button(f1, text="Download", command=lambda: gene1function())
-gene1button.pack(side=LEFT)
+gene1button = Checkbutton(f3, text="Download", variable=var1, onvalue=1, offvalue=0)
+gene1button.pack()
+#add second label
+genlbl2 = Label(f3, text='Homo sapiens BRCA1 (BRCA1) gene, complete cds; ribosomal protein L21-like protein (rpL21) pseudogene, complete sequence; Rho7 (Rho7) and VatI (VatI) genes, complete cds; and unknown (ifp35) gene, exons 1 through 3 and partial cds')
+genlbl2.pack()
+# add button for download of string
+gene2button = Checkbutton(f3, text="Download", variable=var2, onvalue=1, offvalue=0)
+gene2button.pack()
+#add text label
+genelbl3 = Label(f3, text='Test')
+genelbl3.pack()
+#add button for string download
+gene3button = Checkbutton(f3, text='Testing', variable=var3, onvalue=1, offvalue=0)
+gene3button.pack()
+
+#function will run checkbutton functions if they are checked and when ifcheckboxchecked functions button is checked
+def ifcheckboxchecked():
+    if var1.get() == 1:
+        gene1function()
+    elif var2.get() == 1:
+        gene2function()
+    elif var3.get() == 1:
+        gene3function()
+
+
+#the button for ifcheckboxchecked function
+ifcheckboxcheckedbutton = Button(f3, text='Use all items that have been checked', command=lambda: ifcheckboxchecked())
+ifcheckboxcheckedbutton.pack(side=BOTTOM)
+
+
 
 nb.select(f1)
 
@@ -103,8 +196,37 @@ def motif_index():
     return starting_points
     print(motif_index())
 
-#get's gc percetage and index of gcmin and gcmax from freq list
-def get_gc():
+#gets the amount of GCAT's in the file
+def get_gcat():
+    g = 0
+    c = 0
+    a = 0
+    t = 0
+    freq = []
+    for line in open_file:
+        dna_file = line.rstrip("\n")
+        length = len(dna_file)
+        for char in line:
+            # is it only doing the first character of every line?
+
+            # i want to append the index as a key to freq and then add the gc as it's value
+            if char == "g":
+                g += 1
+            if char == "c":
+                c += 1
+            if char == "a":
+                a += 1
+            if char == "t":
+                t += 1
+
+
+    label18 = Label(frame, text="number of g's " + str(g)).pack(side=TOP)
+    label19 = Label(frame, text="number of c's " + str(c)).pack(side=TOP)
+    label20 = Label(frame, text="number of a's " + str(a)).pack(side=TOP)
+    label21 = Label(frame, text="number of t's " + str(t)).pack(side=TOP)
+    return
+
+def run_gc():
     g = 0
     c = 0
     a = 0
@@ -131,11 +253,6 @@ def get_gc():
                 gcmax = max(freq)
                 gcminindex = freq.index(gcmin)
                 gcmaxindex = freq.index(gcmax)
-
-    label18 = Label(frame, text="number of g's " + str(g)).pack(side=TOP)
-    label19 = Label(frame, text="number of c's " + str(c)).pack(side=TOP)
-    label20 = Label(frame, text="number of a's " + str(a)).pack(side=TOP)
-    label21 = Label(frame, text="number of t's " + str(t)).pack(side=TOP)
     label17 = Label(frame, text="gc content: " + str(gc)).pack(side=TOP)
     label22 = Label(frame, text="gc min: " + str(gcmin)).pack(side=TOP)
     label22 = Label(frame, text="gc max: " + str(gcmax)).pack(side=TOP)
@@ -143,8 +260,22 @@ def get_gc():
     label24 = Label(frame, text="gc min index: " + str(gcminindex)).pack(side=TOP)
     return
 
+progress = Progressbar(master,orient=HORIZONTAL,length=100,mode='determinate')
 
+def bar():
+    import time
+    progress['value']=20
+    tk.update_idletasks()
+    time.sleep(1)
+    progress['value']=50
+    tk.update_idletasks()
+    time.sleep(1)
+    progress['value']=80
+    tk.update_idletasks()
+    time.sleep(1)
+    progress['value']=100
 
+progress.pack()
 
 #finds the motif at specified amounts of allowable error and length
 def FrequentWordsWithMismatches(g, k, d): #class this?
@@ -192,9 +323,13 @@ motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
 motiffilesearchbutton.pack(side=TOP)
 
 
-#this runs the get_gc function and actually works
-rungcbutton = Button(bottomframe, text="Run gc", command=lambda: get_gc())
-rungcbutton.pack(side=LEFT)
+#this runs the get_gc function and actually works, it gets the amount of GCAT's
+rungcatbutton = Button(bottomframe, text="Get GCAT Content", command=lambda: get_gcat())
+rungcatbutton.pack(side=LEFT)
+
+#this runs the specific gc content function
+rungcontentbutton = Button(bottomframe, text="Get GC Content", command=lambda: [run_gc(), bar()])
+rungcontentbutton.pack(side=LEFT)
 
 
 #test2 for the run motif button
