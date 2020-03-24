@@ -1,0 +1,416 @@
+import tkinter as tk
+from tkinter import ttk
+from collections import defaultdict
+from tkinter import *
+import bs4 as bs
+import urllib.request
+from tkinter import filedialog
+from tkinter.ttk import Progressbar
+import json
+from tkinter.filedialog import askopenfilename
+
+
+
+
+
+def openfile1(event=None):
+    global filename
+    global open_file
+    filename = filedialog.askopenfilename()
+    open_file = open(filename, mode='r', encoding='utf-8-sig')
+    print('Selected:', filename)
+    return open_file
+
+
+
+def openmotif (event=None):
+    global open_motif
+    global motifname
+    motifname = filedialog.askopenfilename()
+    open_motif = open(motifname, mode='r', encoding='utf-8-sig')
+    print('Selected:', motifname)
+    return open_motif
+
+
+
+
+#master widget
+master = tk.Tk()
+frame = Frame(master)
+frame.pack()
+
+#notebook widget
+nb = ttk.Notebook(master)
+nb.pack(expand=1, fill='both')
+
+
+var1 = IntVar()
+var2 = IntVar()
+
+
+def gene1function(event=NONE):
+    source = urllib.request.urlopen(
+        'https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene2function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene3function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+#make first tab
+f1 = tk.Frame(nb)
+#add the tab
+nb.add(f1, text="Downloadables")
+#add text label
+gene1lbl = Label(f1, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
+gene1lbl.pack()
+# add button for download of string
+gene1button = Button(f1, text="Download", command=lambda: gene1function())
+gene1button.pack()
+#add second label
+genlbl2 = Label(f1, text='Homo sapiens BRCA1 (BRCA1) gene, complete cds; ribosomal protein L21-like protein (rpL21) pseudogene, complete sequence; Rho7 (Rho7) and VatI (VatI) genes, complete cds; and unknown (ifp35) gene, exons 1 through 3 and partial cds')
+genlbl2.pack()
+# add button for download of string
+gene2button = Button(f1, text="Download", command=lambda: gene2function())
+gene2button.pack()
+#add text label
+genelbl3 = Label(f1, text='Test')
+genelbl3.pack()
+#add button for string download
+gene3button = Button(f1, text='Testing', command=lambda: gene3function())
+gene3button.pack()
+
+
+#make the second tab
+f2 = tk.Frame(nb)
+#add the tab
+nb.add(f2, text="Second Tab")
+#add label to tab
+lbl1 = Label(f2, text='label 1')
+lbl1.pack()
+
+#make the third tab
+f3 = tk.Frame(nb)
+#add the tab
+nb.add(f3, text="Third Tab")
+#add label to tab
+lbl2 = Label(f3, text=str()).pack()
+
+#this is the variable for the checkboxes that holds whether they have been checked or not
+#this will be checked by the ifcheckboxchecked function
+var1 = IntVar()
+var2 = IntVar()
+var3 = IntVar()
+
+#these are the functions that are run if their checkbox is checked and the button for the ifcheckboxchecked function is pushed
+def gene1function(event=NONE):
+    source = urllib.request.urlopen(
+        'https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene2function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+def gene3function(event=NONE):
+    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
+    soup = bs.BeautifulSoup(source, features="html.parser")
+    with tk.filedialog.asksaveasfile() as f:
+        f.write(repr(soup))
+    print(soup.get_text())
+
+
+gene1lbl = Label(f3, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
+gene1lbl.pack()
+# add button for download of string
+gene1button = Checkbutton(f3, text="Download", variable=var1, onvalue=1, offvalue=0)
+gene1button.pack()
+#add second label
+genlbl2 = Label(f3, text='Homo sapiens BRCA1 (BRCA1) gene, complete cds; ribosomal protein L21-like protein (rpL21) pseudogene, complete sequence; Rho7 (Rho7) and VatI (VatI) genes, complete cds; and unknown (ifp35) gene, exons 1 through 3 and partial cds')
+genlbl2.pack()
+# add button for download of string
+gene2button = Checkbutton(f3, text="Download", variable=var2, onvalue=1, offvalue=0)
+gene2button.pack()
+#add text label
+genelbl3 = Label(f3, text='Test')
+genelbl3.pack()
+#add button for string download
+gene3button = Checkbutton(f3, text='Testing', variable=var3, onvalue=1, offvalue=0)
+gene3button.pack()
+
+#function will run checkbutton functions if they are checked and when ifcheckboxchecked functions button is checked
+def ifcheckboxchecked():
+    if var1.get() == 1:
+        gene1function()
+    elif var2.get() == 1:
+        gene2function()
+    elif var3.get() == 1:
+        gene3function()
+
+
+#the button for ifcheckboxchecked function
+ifcheckboxcheckedbutton = Button(f3, text='Use all items that have been checked', command=lambda: ifcheckboxchecked())
+ifcheckboxcheckedbutton.pack(side=BOTTOM)
+
+
+
+nb.select(f1)
+
+nb.enable_traversal()
+
+topframe = Frame(master)
+topframe.pack(side=TOP)
+
+
+bottomframe = Frame(master)
+bottomframe.pack(side=BOTTOM)
+
+def motif_index():
+    Genome = open_file.read()
+    Pattern = open_motif.read()
+    k = len(Pattern)
+    t = len(Genome)
+    starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
+    print(Genome)
+    print(Pattern)
+    labelfindmotifindex = Label(text="Indexes of the motif within file: " + str(starting_points)).pack(side=LEFT)
+    return starting_points
+    print(motif_index())
+
+#gets the amount of GCAT's in the file
+def get_gcat():
+    g = 0
+    c = 0
+    a = 0
+    t = 0
+    for line in open_file:
+        for char in line:
+            # is it only doing the first character of every line?
+
+            # i want to append the index as a key to freq and then add the gc as it's value
+            if char == "g":
+                g += 1
+            if char == "c":
+                c += 1
+            if char == "a":
+                a += 1
+            if char == "t":
+                t += 1
+
+
+    label18 = Label(frame, text="number of g's " + str(g)).pack(side=TOP)
+    label19 = Label(frame, text="number of c's " + str(c)).pack(side=TOP)
+    label20 = Label(frame, text="number of a's " + str(a)).pack(side=TOP)
+    label21 = Label(frame, text="number of t's " + str(t)).pack(side=TOP)
+    return
+
+
+
+    #list for the index of items in freq
+    #indexlist = []
+    #list for items in feq
+    #gclist = []
+    #the most likely transcription zone
+    #mostlikelygc = []
+    #holds the outcome of key minus their pair key
+    #iminus = []
+
+
+
+def gcdict(freq):
+    #This subratcs the item from the nex item or vice versa to see if the outcome is greater than 0.05
+    fish = {}
+    listhope = []
+    #where do i add these lists to the dicionary?
+    joverfive = [] #his holds the indexes of j in freq that have hope numbers of greater than 0.05
+    #print(freq)
+    for d, j in enumerate(freq[:-1]):
+        if j <= freq[d+1]:
+            hope = freq[d+1] - freq[d]
+            for i in hope:
+                if i >= 0.05:
+                    joverfive.append(j)
+                    #make it a dictionary to you can find the index and pair it
+                    jindex = freq.index(j)
+                    fish.update({jindex: j})
+
+
+            #print(hope)
+        else:
+            hope = freq[d] - freq[d+1]
+            for i in list(hope):
+                if i >= 0.05:
+                    joverfive.append(j)
+        fish.append(hope)
+        temp = set(joverfive)
+        res = [i for i, val in enumerate(freq) if val in temp]
+        print(res)
+        #print(listhope)
+    #gcdict3(fish, freq)
+    return
+
+
+'''
+def gcdict3(fish, freq):
+    #here we find out the outcomes that are greater than 0.05
+    mostlikelygc = []
+    for i in fish:
+        if i >= 0.05:
+            mostlikelygc.append(i)
+            print(mostlikelygc)
+            largestmgc = max(mostlikelygc)
+            print(largestmgc)
+    gcdict4(largestmgc, freq, fish, mostlikelygc)
+    return
+
+def gcdict4(largestmgc, freq, fish, mostlikelygc):
+    #trying to get the nonexistant index like a silly peeple
+    temp = set(mostlikelygc)
+    res = [i for i, val in enumerate(freq) if val in temp]
+    print(res)
+'''
+
+    # just use gclist to iterate and subtract and whatnot
+        # then just get their index using .get index of this gc in the gc list
+        # and make that the key using dict(zip(indexoftheostlikelygcinwholegclist, mostlikelygc)
+
+
+        #It goes to 52695 index. So there are that many lines, and that many items in freq for gc.
+
+
+def run_gc():
+    g = 0
+    c = 0
+    a = 0
+    t = 0
+    freq = []
+    for line in open_file:
+        dna_file = line.rstrip("\n")
+        length = len(dna_file)
+        for char in line:
+
+            # i want to append the index as a key to freq and then add the gc as it's value
+            if char == "g":
+                g += 1
+            if char == "c":
+                c += 1
+            if char == "a":
+                a += 1
+            if char == "t":
+                t += 1
+                gc = (g + c + 0.) / (a + t + c + g + 0.)
+                freq.append(gc)
+
+                gcmax = max(freq)
+                gcmin = min(freq)
+                gcminindex = freq.index(gcmin)
+                gcmaxindex = freq.index(gcmax)
+
+    label17 = Label(frame, text="gc content: " + str(gc)).pack(side=TOP)
+    label22 = Label(frame, text="gc min: " + str(gcmin)).pack(side=TOP)
+    label22 = Label(frame, text="gc max: " + str(gcmax)).pack(side=TOP)
+    label23 = Label(frame, text="gc max index: " + str(gcmaxindex)).pack(side=TOP)
+    label24 = Label(frame, text="gc min index: " + str(gcminindex)).pack(side=TOP)
+    gcdict(freq)
+    return
+
+
+
+
+
+#finds the motif at specified amounts of allowable error and length
+def FrequentWordsWithMismatches(g, k, d): #class this?
+ #g is genome
+ #k is length
+ #d is number of allowable error
+
+    patcount = defaultdict(int)
+    alphabet = "ACGT"
+    allbut = {ch: tuple(c for c in alphabet if c != ch)
+              for ch in alphabet}
+
+    def inner(i, rd):
+        if not rd or i == k:
+            patcount["".join(base)] += 1
+            return
+        inner(i+1, rd)
+        orig = base[i]
+        for base[i] in allbut[orig]:
+            inner(i+1, rd-1)
+        base[i] = orig
+
+    for i in range(len(g) - k + 1):
+        base = list(g[i : i + k])
+        inner(0, d)
+
+    maxcount = max(patcount.values())
+    return [p for p, c in patcount.items() if c == maxcount]
+
+print(FrequentWordsWithMismatches('AAAAAAAAAA', 2, 1))
+
+#def freqwordholdings():
+
+
+
+
+
+
+#is required to exist in order for openfile1 to work? this is so weird
+filesearchbutton = tk.Button(frame, text="File Open", command=openfile1)
+filesearchbutton.pack(side=TOP)
+
+#for the motif file
+motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
+motiffilesearchbutton.pack(side=TOP)
+
+
+#this runs the get_gc function and actually works, it gets the amount of GCAT's
+rungcatbutton = Button(bottomframe, text="Get GCAT Content", command=lambda: get_gcat())
+rungcatbutton.pack(side=LEFT)
+
+#this runs the specific gc content function
+rungcontentbutton = Button(bottomframe, text="Get GC Content", command=lambda: run_gc())
+rungcontentbutton.pack(side=LEFT)
+
+
+#test2 for the run motif button
+runmotifbuttontest2 = Button(bottomframe, text="Run motif search", command=lambda: motif_index())
+runmotifbuttontest2.pack(side=LEFT)
+
+
+master.mainloop()
+
+
+'''
+                    if i's gc > [i:i+1]'s gc: #if the gc content of line is greater than the line after it
+                    iminus =  i's gc - [i:i+1]'s gc #the gc content of line minus the gc content of the next line
+                    else: iminus = [i:i+1]'s gc - i's gc #the gc content of of the next line minus the gc content of line
+                    if open_file.index(i) > open_file.index[i:i+1]: #if the index of line is greater is greater than the index of the next line
+                    indexminus = open_file.index(i) - open_file.index([i:i+1]) #index of line mminus the index of the next line
+                    else: indexminus = open_file.index([i:i+1]) - open_file.index(i) #index of the next line minus the index of line
+                        if 0.005 <= iminus < 2: #if the output of iminus is greater than 0.005 but less than 2
+                            if 0 <= indexminus < 2: #if the ouput of indexminus is greater than 0 but less than 2
+                                #send the line(i) and it's gc content to a list, send the next line(i:i+1) and it's gc content to a list, as tuples
+                        else: #send error
+
+               Now have the stuff below sort through that new list of tuples instead of freq          
+                '''
