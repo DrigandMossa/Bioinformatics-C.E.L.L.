@@ -239,33 +239,38 @@ def get_gcat():
 def gcdict(freq):
     #This subratcs the item from the nex item or vice versa to see if the outcome is greater than 0.05
     fish = {}
-    listhope = []
-    #where do i add these lists to the dicionary?
+    freq1 = [round(s, 3) for s in freq]
+    freq2 = [s*1000 for s in freq1]
+    freq3 = [int(s) for s in freq2]
+    print(freq3)
     joverfive = [] #his holds the indexes of j in freq that have hope numbers of greater than 0.05
-    #print(freq)
-    for d, j in enumerate(freq[:-1]):
-        if j <= freq[d+1]:
-            hope = freq[d+1] - freq[d]
+    for d, j in enumerate(freq3[:-1]):
+        if j <= freq3[d+1]:
+            #trying to multiply the floats by 100 to make them not floats so i can iterate ree
+            hope = (freq3[d+1]) - (freq3[d])
+            #cannot iterate through floats
+            #multiply floats by 100 since you will only get up to 2 decimal points
             for i in hope:
-                if i >= 0.05:
+                if i >= 50:
                     joverfive.append(j)
                     #make it a dictionary to you can find the index and pair it
-                    jindex = freq.index(j)
+                    jindex = freq3.index(j)
                     fish.update({jindex: j})
 
 
             #print(hope)
         else:
-            hope = freq[d] - freq[d+1]
+            hope = (freq3[d]) - (freq3[d+1])
             for i in list(hope):
-                if i >= 0.05:
+                if i >= 5:
                     joverfive.append(j)
         fish.append(hope)
         temp = set(joverfive)
-        res = [i for i, val in enumerate(freq) if val in temp]
-        print(res)
-        #print(listhope)
-    #gcdict3(fish, freq)
+        for i in joverfive:
+            indexofi = []
+            if i in hope:
+                indexofi.append(hope.index(i))
+        print(fish)
     return
 
 
@@ -330,6 +335,7 @@ def run_gc():
     label22 = Label(frame, text="gc max: " + str(gcmax)).pack(side=TOP)
     label23 = Label(frame, text="gc max index: " + str(gcmaxindex)).pack(side=TOP)
     label24 = Label(frame, text="gc min index: " + str(gcminindex)).pack(side=TOP)
+    print(freq)
     gcdict(freq)
     return
 
