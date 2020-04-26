@@ -383,25 +383,25 @@ print(FrequentWordsWithMismatches('AAAAAAAAAA', 2, 1))
 
 
 #is required to exist in order for openfile1 to work? this is so weird
-filesearchbutton = tk.Button(frame, text="File Open", command=openfile1)
+filesearchbutton = tk.Button(frame, text="Genome/Gene", command=openfile1)
 filesearchbutton.pack(side=TOP)
 
 #for the motif file
-motiffilesearchbutton = tk.Button(frame, text="Motif File", command=openmotif)
+motiffilesearchbutton = tk.Button(frame, text="Motif", command=openmotif)
 motiffilesearchbutton.pack(side=TOP)
 
 
 #this runs the get_gc function and actually works, it gets the amount of GCAT's
-rungcatbutton = Button(bottomframe, text="Get GCAT Content", command=lambda: get_gcat())
+rungcatbutton = Button(bottomframe, text="Number of G,C,A's, and T's", command=lambda: get_gcat())
 rungcatbutton.pack(side=LEFT)
 
 #this runs the specific gc content function
-rungcontentbutton = Button(bottomframe, text="Get GC Content", command=lambda: run_gc())
+rungcontentbutton = Button(bottomframe, text="GC Percentage/Possible Transcription Zone", command=lambda: run_gc())
 rungcontentbutton.pack(side=LEFT)
 
 
 #test2 for the run motif button
-runmotifbuttontest2 = Button(bottomframe, text="Run motif search", command=lambda: motif_index())
+runmotifbuttontest2 = Button(bottomframe, text="Search for motif", command=lambda: motif_index())
 runmotifbuttontest2.pack(side=LEFT)
 
 
