@@ -242,16 +242,18 @@ def gcdict(freq):
     freq1 = [round(s, 3) for s in freq]
     freq2 = [s*1000 for s in freq1]
     freq3 = [int(s) for s in freq2]
-    print(freq3)
+    #print(freq3)
     joverfive = [] #his holds the indexes of j in freq that have hope numbers of greater than 0.05
     for d, j in enumerate(freq3[:-1]):
         if j <= freq3[d+1]:
             #trying to multiply the floats by 100 to make them not floats so i can iterate ree
-            hope = (freq3[d+1]) - (freq3[d])
-            #cannot iterate through floats
-            #multiply floats by 100 since you will only get up to 2 decimal points
-            for i in hope:
-                if i >= 50:
+            hope = [(freq3[d+1]) - (freq3[d])]
+            #print(hope)
+            hope1 = list(hope)
+            #cannot iterate through floats or int
+            #
+            for i in hope1:
+                if (i) >= 50:
                     joverfive.append(j)
                     #make it a dictionary to you can find the index and pair it
                     jindex = freq3.index(j)
@@ -260,17 +262,17 @@ def gcdict(freq):
 
             #print(hope)
         else:
-            hope = (freq3[d]) - (freq3[d+1])
+            hope = [(freq3[d]) - (freq3[d+1])]
             for i in list(hope):
-                if i >= 5:
+                if int(i) >= 50:
                     joverfive.append(j)
-        fish.append(hope)
         temp = set(joverfive)
         for i in joverfive:
             indexofi = []
-            if i in hope:
-                indexofi.append(hope.index(i))
-        print(fish)
+            if (i) in list(hope):
+                indexofi.append(hope1.index(i))
+    print(fish)
+    Label22 = Label(frame, text="The index of a possible transcription beginning/end : greatest and least  amounts " + str(fish)).pack(side=TOP)
     return
 
 
