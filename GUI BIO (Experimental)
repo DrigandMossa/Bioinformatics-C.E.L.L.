@@ -1,8 +1,12 @@
+from Bio import Seq
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.Alphabet import IUPAC
 import tkinter as tk
 from tkinter import ttk
 from collections import defaultdict
 from tkinter import *
-import bs4 as bs
+'''import bs4 as bs'''
 import urllib.request
 from tkinter import filedialog
 from tkinter.ttk import Progressbar
@@ -44,63 +48,95 @@ nb = ttk.Notebook(master)
 nb.pack(expand=1, fill='both')
 
 
-var1 = IntVar()
-var2 = IntVar()
-
-
-def gene1function(event=NONE):
-    source = urllib.request.urlopen(
-        'https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
-    soup = bs.BeautifulSoup(source, features="html.parser")
-    with tk.filedialog.asksaveasfile() as f:
-        f.write(repr(soup))
-    print(soup.get_text())
-
-def gene2function(event=NONE):
-    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
-    soup = bs.BeautifulSoup(source, features="html.parser")
-    with tk.filedialog.asksaveasfile() as f:
-        f.write(repr(soup))
-    print(soup.get_text())
-
-def gene3function(event=NONE):
-    source = urllib.request.urlopen('https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=1698398&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
-    soup = bs.BeautifulSoup(source, features="html.parser")
-    with tk.filedialog.asksaveasfile() as f:
-        f.write(repr(soup))
-    print(soup.get_text())
-
 #make first tab
 f1 = tk.Frame(nb)
 #add the tab
-nb.add(f1, text="Downloadables")
+nb.add(f1, text="Transcribe")
+
+
+var1 = IntVar()
+var2 = IntVar()
+var3 = IntVar()
+var4 = IntVar()
+var5 = IntVar()
+var6 = IntVar()
+var7 = IntVar()
+
+#these are the functions that are run if their checkbox is checked and the button for the ifcheckboxchecked function is pushed
+def gene1function(event=NONE):
+    # gemone reads the gene/genome file
+    Genome = open_file.read()
+    my_seq = Seq(Genome)
+    my_seq_lbl = Label(f1, text="Sequence: " + str(my_seq)).pack(side=TOP)
+    my_seq_lbl.pack()
+    print(my_seq)
+    return
+
+
 #add text label
-gene1lbl = Label(f1, text='NC_000017.11:c43125364-43044295 Homo sapiens chromosome 17, GRCh38.p13 Primary Assembly')
+gene1lbl = Label(f1, text='Select which alphabet you wish to transcribe your sequence into.')
 gene1lbl.pack()
-# add button for download of string
-gene1button = Button(f1, text="Download", command=lambda: gene1function())
+# add button for transcription into protein codons
+gene1button = Checkbutton(f1, text="Protein Codons", variable=var1, onvalue=1, offvalue=0)
 gene1button.pack()
-#add second label
-genlbl2 = Label(f1, text='Homo sapiens BRCA1 (BRCA1) gene, complete cds; ribosomal protein L21-like protein (rpL21) pseudogene, complete sequence; Rho7 (Rho7) and VatI (VatI) genes, complete cds; and unknown (ifp35) gene, exons 1 through 3 and partial cds')
-genlbl2.pack()
-# add button for download of string
-gene2button = Button(f1, text="Download", command=lambda: gene2function())
+
+# add button for transcription into DNA
+gene2button = Checkbutton(f1, text="DNA", variable=var2, onvalue=1, offvalue=0)
 gene2button.pack()
-#add text label
-genelbl3 = Label(f1, text='Test')
-genelbl3.pack()
-#add button for string download
-gene3button = Button(f1, text='Testing', command=lambda: gene3function())
+
+#add button for transcription into RNA
+gene3button = Checkbutton(f1, text='RNA', variable=var3, onvalue=1, offvalue=0)
 gene3button.pack()
 
+#function will run checkbutton functions if they are checked and when ifcheckboxchecked functions button is checked
+def ifcheckboxchecked1():
+    if var1.get() == 1:
+        gene1function()
+    elif var2.get() == 1:
+        gene2function()
+    elif var3.get() == 1:
+        gene3function()
+    '''elif var4.get() == 1:
+        gene4function()
+    elif var5.get() == 1:
+        gene5function()
+    elif var6.get() == 1:
+        gene6function()
+    elif var7.get() == 1:
+        gene7function()'''
+    return
+
+
+
+
+#run the gene functions 1-7 if checked
+runcheckbutton = Button(f1, text="Run", command=lambda: ifcheckboxchecked1())
+runcheckbutton.pack()
 
 #make the second tab
 f2 = tk.Frame(nb)
 #add the tab
-nb.add(f2, text="Second Tab")
+nb.add(f2, text="Blast")
 #add label to tab
-lbl1 = Label(f2, text='label 1')
+lbl1 = Label(f2, text='Search for sequence origins')
 lbl1.pack()
+#checkbutton for Nucleotide BLAST
+gene1button = Checkbutton(f2, text="Nucleotide > Nucleotide (Nucleotide BLAST)", variable=var4, onvalue=1, offvalue=0)
+gene1button.pack()
+
+#checkbutton for blastx
+gene2button = Checkbutton(f2, text="Translated Nucleotide > Protein (blastx)", variable=var5, onvalue=1, offvalue=0)
+gene2button.pack()
+
+#checkbutton for tblastn
+gene3button = Checkbutton(f2, text='Protein > Translated Nucleotide (tblastn)', variable=var6, onvalue=1, offvalue=0)
+gene3button.pack()
+
+#checkbutton for Protein Blast
+gene4button = Checkbutton(f2, text='Protein > Protein (Protein BLAST)', variable=var7, onvalue=1, offvalue=0)
+gene4button.pack()
+
+
 
 #make the third tab
 f3 = tk.Frame(nb)
@@ -116,7 +152,7 @@ var2 = IntVar()
 var3 = IntVar()
 
 #these are the functions that are run if their checkbox is checked and the button for the ifcheckboxchecked function is pushed
-def gene1function(event=NONE):
+'''def gene1function(event=NONE):
     source = urllib.request.urlopen(
         'https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=568815581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&from=43044295&to=43125364&strand=on&retmode=html&withmarkup=on&tool=portal&log$=seqview&maxdownloadsize=1000000')
     soup = bs.BeautifulSoup(source, features="html.parser")
@@ -170,12 +206,13 @@ def ifcheckboxchecked():
 #the button for ifcheckboxchecked function
 ifcheckboxcheckedbutton = Button(f3, text='Use all items that have been checked', command=lambda: ifcheckboxchecked())
 ifcheckboxcheckedbutton.pack(side=BOTTOM)
-
+'''
 
 
 nb.select(f1)
 
 nb.enable_traversal()
+
 
 topframe = Frame(master)
 topframe.pack(side=TOP)
@@ -185,10 +222,13 @@ bottomframe = Frame(master)
 bottomframe.pack(side=BOTTOM)
 
 def motif_index():
+    #gemone reads the gene/genome file
     Genome = open_file.read()
+    #Pattern reads the motif file
     Pattern = open_motif.read()
     k = len(Pattern)
     t = len(Genome)
+    #startingpoint is finding the motif within gene/genome
     starting_points = [i for i in range(t - k + 1) if Genome[i:(i + k)] == Pattern]
     print(Genome)
     print(Pattern)
@@ -204,7 +244,7 @@ def get_gcat():
     t = 0
     for line in open_file:
         for char in line:
-            # is it only doing the first character of every line?
+            #
 
             # i want to append the index as a key to freq and then add the gc as it's value
             if char == "g":
